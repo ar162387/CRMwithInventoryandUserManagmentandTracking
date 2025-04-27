@@ -137,12 +137,9 @@ npm run dev
 ## 🤝 Support
 
 For technical support or business inquiries, please contact:
-[Your Contact Information]
+ar162387@gmail.com
++923355323617(Whatsapp)
 
-## 📄 License
 
-[Your License Information]
-
----
 
 Made with ❤️ for businesses who value efficiency and accuracy. 

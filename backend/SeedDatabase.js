@@ -386,8 +386,8 @@ async function generateVendorInvoices(vendors, brokers, items) {
         const quantity = getRandomInt(20, 100);
         const netWeight = getRandomInt(200, 1000);
         const grossWeight = netWeight + getRandomInt(100, 150);
-        const purchasePrice = getRandomInt(500, 1000);
-        const packagingCost = getRandomInt(40, 100);
+        const purchasePrice = getRandomInt(300, 600);
+        const packagingCost = getRandomInt(20, 50);
         const totalPrice = Math.round(purchasePrice * netWeight) + (packagingCost * quantity);
 
         invoiceItems.push({
@@ -627,9 +627,9 @@ async function generateCustomerInvoices(customers, brokers, items) {
         }
 
         // Generate random values for the item
-        const sellingPrice = getRandomInt(750, 1500);
-        const packagingCost = getRandomInt(60, 140);
-        const totalPrice = Math.round(sellingPrice * netWeight / 1000) + packagingCost;
+        const sellingPrice = getRandomInt(1000, 2000);
+        const packagingCost = getRandomInt(30, 80);
+        const totalPrice = Math.round(sellingPrice * netWeight) + (packagingCost * quantity);
 
         invoiceItems.push({
           itemId: item._id,

@@ -19,6 +19,10 @@ const VendorInvoices = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [invoiceToDelete, setInvoiceToDelete] = useState(null);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(12);
+
   // Fetch invoices on component mount or when returning from edit page
   useEffect(() => {
     fetchInvoices();
@@ -37,6 +41,7 @@ const VendorInvoices = () => {
       const data = await getVendorInvoices();
       setInvoices(data);
       setError(null);
+      setCurrentPage(1); // Reset to first page when fetching new data
     } catch (err) {
       console.error('Error fetching vendor invoices:', err);
       setError('Failed to load vendor invoices. Please try again later.');
@@ -60,6 +65,7 @@ const VendorInvoices = () => {
       const data = await searchVendorInvoices(query);
       setInvoices(data);
       setError(null);
+      setCurrentPage(1); // Reset to first page when search results change
     } catch (err) {
       console.error('Error searching vendor invoices:', err);
       setError('Failed to search vendor invoices. Please try again.');
@@ -118,6 +124,7 @@ const VendorInvoices = () => {
 
   const handleStatusFilterChange = (e) => {
     setStatusFilter(e.target.value);
+    setCurrentPage(1); // Reset to first page when filter changes
   };
 
   const handleViewInvoice = (invoice) => {
@@ -166,6 +173,11 @@ const VendorInvoices = () => {
     setInvoiceToDelete(null);
   };
 
+  // Handle page change
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   // Filter invoices based on search query and status
   const filteredInvoices = invoices.filter(invoice => {
     const matchesSearch =
@@ -178,6 +190,13 @@ const VendorInvoices = () => {
 
     return matchesSearch && matchesStatus;
   });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredInvoices.length / pageSize);
+  const paginatedInvoices = filteredInvoices.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -279,7 +298,7 @@ const VendorInvoices = () => {
                   </td>
                 </tr>
               ) : (
-                filteredInvoices.map((invoice) => (
+                paginatedInvoices.map((invoice) => (
                   <tr key={invoice._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {invoice.invoiceNumber}
@@ -346,6 +365,49 @@ const VendorInvoices = () => {
           </table>
         </div>
       </div>
+
+      {/* Pagination */}
+      {!loading && filteredInvoices.length > 0 && (
+        <div className="flex justify-between items-center mt-6">
+          <div className="text-sm text-gray-700">
+            Showing {(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, filteredInvoices.length)} of {filteredInvoices.length} invoices
+          </div>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 rounded ${currentPage === 1
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-1 rounded ${currentPage === page
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 rounded ${currentPage === totalPages
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* View Invoice Modal */}
       {isViewModalOpen && selectedInvoice && (
