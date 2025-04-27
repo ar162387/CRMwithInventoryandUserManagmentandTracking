@@ -1,0 +1,67 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Development Workflow
+
+This document outlines the development workflow for this application.
+
+## Setup and Installation
+
+1. Install dependencies for both frontend and backend:
+   ```
+   # Frontend
+   cd frontend
+   npm install
+
+   # Backend
+   cd backend
+   npm install
+   ```
+
+2. Set up environment variables (create `.env` files in both frontend and backend directories)
+
+3. Seed the database (optional):
+   ```
+   cd backend
+   node seed.js
+   ```
+
+## Running the Application
+
+1. Start the backend server:
+   ```
+   cd backend
+   npm run dev
+   ```
+
+2. Start the frontend development server:
+   ```
+   cd frontend
+   npm run dev
+   ```
+
+## Development Guidelines
+
+### Code Structure
+- Frontend components should be organized by feature
+- Backend routes should follow RESTful patterns
+- Use service layers for business logic
+- Controllers should handle request/response only
+
+### State Management
+- Use React Context API for global state
+- Local component state for UI-specific state
+- API services for data fetching
+
+### API Development
+- Define routes in [backend/routes/](mdc:backend/routes/)
+- Implement controllers in [backend/controllers/](mdc:backend/controllers/)
+- Define models in [backend/models/](mdc:backend/models/)
+- Business logic goes in [backend/services/](mdc:backend/services/)
+
+### Testing
+- Unit tests should be placed alongside the components they test
+- Integration tests in separate test directories
+- API tests using REST client or Postman

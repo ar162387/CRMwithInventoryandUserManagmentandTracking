@@ -1,0 +1,45 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Key Features
+
+This application provides several core features for inventory and invoice management:
+
+## Inventory Management
+- Tracks items with quantities and weights
+- Manages stock in both shop and warehouse locations
+- Updates inventory automatically when invoices are created
+- Implementation starts at [backend/controllers/inventory.js](mdc:backend/controllers/inventory.js)
+
+## Customer Invoicing
+- Generate new customer invoices with line items
+- Calculate totals, taxes, and discounts
+- Track invoice status (draft, sent, paid, overdue)
+- Implementation begins at [backend/controllers/invoices.js](mdc:backend/controllers/invoices.js)
+- Frontend workflow at [frontend/src/pages/Invoices/](mdc:frontend/src/pages/Invoices/)
+
+## Broker Management
+- Track broker information and their customers
+- Calculate commissions based on invoice amounts
+- Generate commission reports
+- Implementation at [backend/services/broker.js](mdc:backend/services/broker.js)
+
+## Payment Tracking
+- Record payments against invoices
+- Update invoice status automatically
+- Track payment history and outstanding balances
+- Implementation at [backend/controllers/payments.js](mdc:backend/controllers/payments.js)
+
+## Vendor Purchases
+- Record purchases from vendors
+- Update inventory when goods are received
+- Track purchase orders and their status
+- Implementation at [backend/controllers/purchases.js](mdc:backend/controllers/purchases.js)
+
+## Reporting
+- Generate sales reports by date range
+- Track inventory levels and value
+- Monitor broker commission totals
+- Implementation at [backend/services/reports.js](mdc:backend/services/reports.js)

@@ -1,0 +1,69 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Broker Commission Calculation
+
+This rule specifically addresses broker commission calculation and the totalRemaining field issue.
+
+## Broker Model Structure
+
+The [backend/models/Broker.js](mdc:backend/models/Broker.js) model includes these key financial fields:
+- `payments`: Array of payment records with amount, method, and date
+- `totalPaid`: Sum of all payments made to the broker
+- `totalCommission`: Total commission earned across all invoices
+- `totalRemaining`: Difference between total commission and total paid
+
+## Correct Calculation Logic
+
+The totalRemaining field must be calculated as follows:
+```javascript
+// Ensure values are whole numbers
+totalPaid = Math.round(this.payments.reduce((sum, payment) => sum + payment.amount, 0));
+totalPaid = Math.max(0, totalPaid); // Prevent negative values
+
+// Ensure totalCommission is a valid number
+if (typeof totalCommission !== 'number' || isNaN(totalCommission)) {
+  totalCommission = 0;
+}
+totalCommission = Math.round(totalCommission);
+
+// Calculate totalRemaining and prevent negative values
+totalRemaining = Math.max(0, totalCommission - totalPaid);
+```
+
+## Common Issues
+
+1. **NaN Values**: The `totalRemaining` field becomes NaN when:
+   - `totalCommission` is undefined, null, or NaN
+   - Invalid numeric conversions occur during calculations
+
+2. **Negative Values**: The `totalRemaining` should never be negative, which can happen if:
+   - `totalPaid` exceeds `totalCommission`
+   - Calculations don't include validation to prevent negative results
+
+## Implementation in Broker Model
+
+In the [backend/models/Broker.js](mdc:backend/models/Broker.js) pre-save hook:
+- Calculate `totalPaid` from all payments
+- Ensure `totalCommission` is a valid number (not undefined or NaN)
+- Calculate `totalRemaining` as `totalCommission - totalPaid`
+- Prevent `totalRemaining` from becoming negative using `Math.max(0, value)`
+
+## Integration with Invoice System
+
+When creating or updating customer invoices:
+1. Calculate broker commission for the invoice
+2. Update the broker's `totalCommission` value accordingly
+3. Ensure proper numeric conversion with `parseFloat()` or `Number()`
+4. Use `Math.round()` for consistent whole number values
+5. Verify calculations don't result in NaN or negative values
+
+## Important Validations
+
+- Always check if broker-related fields exist before calculations
+- Use proper type checking with `typeof value === 'number'`
+- Check for NaN with `isNaN(value)`
+- Apply `Math.round()` for consistent whole number values
+- Ensure non-negative values with `Math.max(0, value)`

@@ -1,0 +1,62 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project Architecture
+
+This document outlines the high-level architecture and interactions between system components.
+
+## Architecture Overview
+
+This application follows a classic client-server architecture:
+- Frontend: Single Page Application (SPA) built with React, Vite, and Tailwind CSS
+- Backend: RESTful API service built with Express.js and MongoDB
+
+## System Interactions
+
+### Frontend Architecture
+- [frontend/src/main.jsx](mdc:frontend/src/main.jsx) - Application entry point
+- [frontend/src/App.jsx](mdc:frontend/src/App.jsx) - Main component defining routes and layout
+- [frontend/src/components](mdc:frontend/src/components) - Reusable UI components
+- [frontend/src/pages](mdc:frontend/src/pages) - Page-level components
+- [frontend/src/services](mdc:frontend/src/services) - API communication layer
+- [frontend/src/contexts](mdc:frontend/src/contexts) - React context providers for state management
+
+### Backend Architecture
+- [backend/server.js](mdc:backend/server.js) - Server entry point and configuration
+- [backend/routes](mdc:backend/routes) - API route definitions
+- [backend/controllers](mdc:backend/controllers) - Request handling logic
+- [backend/models](mdc:backend/models) - Data models and schema definitions
+- [backend/services](mdc:backend/services) - Business logic layer
+- [backend/middleware](mdc:backend/middleware) - Request processing middleware
+
+## Data Flow
+
+1. **User Interaction Flow**:
+   - User interacts with frontend UI
+   - Frontend components update state and call services
+   - Services make API requests to backend
+   - Backend processes requests and returns responses
+   - Frontend updates UI based on responses
+
+2. **Invoice Creation Flow**:
+   - Customer and item data retrieved from database
+   - Frontend builds invoice with selected items
+   - Validation performed on both frontend and backend
+   - Backend calculates prices, commissions, and totals
+   - Database updated with new invoice record
+   - Inventory quantities adjusted accordingly
+
+3. **Authentication Flow**:
+   - User credentials validated against database
+   - JWT token generated and returned to frontend
+   - Token stored in frontend and included in subsequent requests
+   - Backend middleware validates token on protected routes
+
+## Scalability Considerations
+
+- Database queries are optimized with proper indexing
+- API endpoints use pagination for large data sets
+- Frontend implements virtualization for long lists
+- Backend services are modular for potential microservice separation

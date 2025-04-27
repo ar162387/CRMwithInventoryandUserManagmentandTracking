@@ -1,0 +1,73 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Broker Validation in Customer Invoices
+
+This rule describes the broker validation process in customer invoice generation and the calculations involved.
+
+## Key Components
+
+### Data Model
+- **CustomerInvoice Schema**: [backend/models/CustomerInvoice.js](mdc:backend/models/CustomerInvoice.js) contains the definition for broker fields:
+  - `brokerId`: Optional reference to a Broker document
+  - `brokerName`: Name of the broker
+  - `brokerCommissionPercentage`: Percentage of commission for the broker
+  - `brokerCommissionAmount`: Calculated amount of commission
+
+- **Broker Schema**: [backend/models/Broker.js](mdc:backend/models/Broker.js) contains fields for tracking commission:
+  - `payments`: Array of payment records with amount, method, and date
+  - `totalPaid`: Sum of all payments made to the broker
+  - `totalCommission`: Total commission earned across all invoices
+  - `totalRemaining`: Difference between total commission and total paid
+
+### Frontend Implementation
+- **Generate Invoice Form**: [frontend/src/pages/Customers/GenerateCustomerInvoice.jsx](mdc:frontend/src/pages/Customers/GenerateCustomerInvoice.jsx) handles:
+  - Optional broker selection
+  - Commission percentage input (shown only when a broker is selected)
+  - Real-time calculation of commission amounts
+
+### Calculation Logic
+1. Broker commission is only calculated when a broker is selected and a commission percentage is provided
+2. Formula: `brokerCommissionAmount = (total * brokerCommissionPercentage) / 100`
+3. Total is calculated as: `total = subtotal + labourTransportCost`
+4. Subtotal is the sum of all item prices: `subtotal = sum(items.totalPrice)`
+
+### Broker totalRemaining Calculation
+In the Broker model, totalRemaining must be calculated as:
+```javascript
+// In Broker model pre-save hook
+// Calculate total paid from all payments
+totalPaid = Math.round(this.payments.reduce((sum, payment) => sum + payment.amount, 0));
+totalPaid = Math.max(0, totalPaid); // Prevent negative totalPaid
+
+// Ensure totalCommission is a valid number 
+if (typeof this.totalCommission !== 'number' || isNaN(this.totalCommission)) {
+  this.totalCommission = 0;
+}
+totalCommission = Math.round(this.totalCommission);
+
+// Calculate totalRemaining and prevent negative values
+totalRemaining = Math.max(0, totalCommission - totalPaid);
+```
+
+### Validation Rules
+1. Broker fields are all optional
+2. Commission percentage must be between 0-100%
+3. When editing an invoice, reducing the commission percentage is not allowed if it would result in a negative remaining commission (if some commission has already been paid)
+4. The `totalRemaining` field must be correctly calculated even when a broker is selected or changed
+5. `totalRemaining` must never be negative - use Math.max(0, value)
+6. All values should be whole numbers - use Math.round()
+
+## Important Considerations
+- When calculating the `remainingAmount`, ensure the formula uses proper numeric values
+- Verify that the broker commission does not cause `NaN` values in calculations
+- When changing a broker or commission percentage, recalculate all dependent fields
+- Always check if `totalCommission` is a valid number before calculations to prevent NaN
+- Use Math.max(0, value) to prevent negative values in `totalRemaining`
+
+## Related Files
+- [backend/controllers/customerInvoiceController.js](mdc:backend/controllers/customerInvoiceController.js) - Server-side validation
+- [frontend/src/pages/Customers/CustomerInvoicePreviewModal.jsx](mdc:frontend/src/pages/Customers/CustomerInvoicePreviewModal.jsx) - Validation before saving
+- [frontend/src/pages/Customers/EditCustomerInvoiceModal.jsx](mdc:frontend/src/pages/Customers/EditCustomerInvoiceModal.jsx) - Validation during editing

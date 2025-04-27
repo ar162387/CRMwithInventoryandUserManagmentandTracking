@@ -1,0 +1,36 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Backend Structure
+
+The backend is an Express.js application with MongoDB as the database.
+
+## Core Files
+- [backend/server.js](mdc:backend/server.js) - Server entry point and configuration
+- [backend/seed.js](mdc:backend/seed.js) - Database seed utility
+
+## Directory Structure
+- `routes/` - API route definitions
+- `controllers/` - Request handlers that process route requests
+- `models/` - MongoDB schema definitions
+- `middleware/` - Express middleware functions
+- `services/` - Business logic and service functions
+- `utils/` - Utility functions
+- `src/` - Additional source code
+
+## API Routes
+The backend exposes the following API routes:
+- `/api/auth` - Authentication endpoints
+- `/api/users` - User management
+- `/api/activity-log` - Activity logging
+- `/api/items` - Item management
+- `/api/vendors` - Vendor management
+- `/api/brokers` - Broker management
+- `/api/customers` - Customer management
+- `/api/commissioners` - Commissioner management
+- `/api/vendor-invoices` - Vendor invoice management
+
+## Development
+- Start the backend server with `npm start` or `node server.js`

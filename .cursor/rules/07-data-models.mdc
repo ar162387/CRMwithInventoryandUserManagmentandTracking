@@ -1,0 +1,41 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Data Models and Relationships
+
+This rule outlines the core data models in the application and their relationships.
+
+## Core Models
+
+### Inventory Models
+- **Item**: [backend/models/Item.js](mdc:backend/models/Item.js) - Core inventory item with details like name, category, and stock
+- **Category**: [backend/models/Category.js](mdc:backend/models/Category.js) - Categories for organizing items
+
+### Business Entities
+- **Customer**: [backend/models/Customer.js](mdc:backend/models/Customer.js) - Customer information and contact details
+- **Vendor**: [backend/models/Vendor.js](mdc:backend/models/Vendor.js) - Supplier information and contact details
+- **Broker**: [backend/models/Broker.js](mdc:backend/models/Broker.js) - Intermediary agents who facilitate transactions
+
+### Transaction Models
+- **CustomerInvoice**: [backend/models/CustomerInvoice.js](mdc:backend/models/CustomerInvoice.js) - Sales invoices for customers
+- **VendorInvoice**: [backend/models/VendorInvoice.js](mdc:backend/models/VendorInvoice.js) - Purchase invoices from vendors
+
+## Key Relationships
+- Items belong to Categories
+- CustomerInvoices reference Customers, Brokers, and Items
+- VendorInvoices reference Vendors, Brokers, and Items
+- Both invoice types track payments and calculate status automatically
+
+## Common Fields
+Most models include:
+- Creation and update timestamps
+- Unique identifiers
+- Reference fields to related models
+- Status indicators where applicable
+
+## Data Validation
+- Schema-level validation enforces data integrity
+- Custom validation logic in pre-save hooks
+- Status calculations based on payment information

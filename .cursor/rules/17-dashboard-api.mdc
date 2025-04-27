@@ -1,0 +1,73 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Dashboard API Architecture
+
+## Overview
+
+The Dashboard API provides a central interface for retrieving aggregated financial data from various parts of the system. It serves summary data for the main dashboard page, including pending payments, reminders, and circulating supply information.
+
+## Key Components
+
+### Dashboard Controller
+The [backend/controllers/dashboardController.js](mdc:backend/controllers/dashboardController.js) is the core component that implements all dashboard API endpoints. It contains methods for:
+
+- Getting customer payment statuses (remaining, paid, reminders)
+- Getting vendor payment statuses (remaining, paid, reminders)
+- Getting broker payment statuses (remaining, paid, reminders)
+- Getting commissioner payment statuses (remaining, paid, reminders)
+- Calculating circulating supply information
+
+### Dashboard Routes
+Routes are defined in [backend/routes/dashboardRoutes.js](mdc:backend/routes/dashboardRoutes.js) which maps HTTP endpoints to controller methods.
+
+## Relationship with Data Models
+
+The Dashboard API has read-only relationships with the following models:
+
+1. **CustomerInvoice Model** [backend/models/CustomerInvoice.js](mdc:backend/models/CustomerInvoice.js)
+   - Used to calculate total/remaining customer payments
+   - Used for generating customer payment reminders
+
+2. **VendorInvoice Model** [backend/models/VendorInvoice.js](mdc:backend/models/VendorInvoice.js)
+   - Used to calculate total/remaining vendor payments
+   - Used for generating vendor payment reminders
+
+3. **Broker Model** [backend/models/Broker.js](mdc:backend/models/Broker.js)
+   - Used to calculate total/remaining broker commissions
+   - Used for generating broker payment reminders
+
+4. **Commissioner Model** [backend/models/Commissioner.js](mdc:backend/models/Commissioner.js)
+   - Used to calculate total/remaining commissioner payments
+   - Used for generating commissioner payment reminders
+
+5. **Balance Model** [backend/models/Balance.js](mdc:backend/models/Balance.js)
+   - Used to calculate total business balance and circulating supply
+
+## Frontend Integration
+
+The Dashboard API endpoints are consumed in [frontend/src/pages/DashboardPage.jsx](mdc:frontend/src/pages/DashboardPage.jsx) which:
+
+1. Makes multiple parallel API calls to fetch dashboard data
+2. Displays financial summary information in cards
+3. Shows upcoming payment reminders in filterable tables
+4. Calculates and displays circulating supply information
+
+## Implementation Pattern
+
+The Dashboard API follows these patterns:
+
+1. **Aggregation**: Combines data from multiple models to provide business insights
+2. **Read-only**: Does not modify any data, only retrieves and calculates
+3. **Date filtering**: Uses helper functions like `getUpcomingWeekRange()` to filter reminders
+4. **Parallel Fetching**: Frontend uses Promise.all for efficient data loading
+
+## Extending the Dashboard
+
+When adding new financial entities to the system, they should be integrated into the Dashboard API by:
+
+1. Adding new controller methods in dashboardController.js
+2. Adding new endpoints in dashboardRoutes.js
+3. Updating the frontend DashboardPage.jsx to display the new data

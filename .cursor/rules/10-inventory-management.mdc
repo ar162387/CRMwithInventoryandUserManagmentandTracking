@@ -1,0 +1,59 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Inventory Management
+
+This rule outlines the inventory management system, which tracks items, their quantities, and weights.
+
+## Core Components
+
+### Backend
+
+- **Model**: [backend/models/Item.js](mdc:backend/models/Item.js) - Defines the item schema with inventory tracking fields
+- **Controller**: [backend/controllers/itemController.js](mdc:backend/controllers/itemController.js) - Handles CRUD operations for items
+- **Routes**: [backend/routes/itemRoutes.js](mdc:backend/routes/itemRoutes.js) - API endpoints for item management
+
+### Frontend
+
+- **Item Management**: [frontend/src/pages/Inventory/ItemsPage.jsx](mdc:frontend/src/pages/Inventory/ItemsPage.jsx) - Main interface for managing items
+- **Item Forms**: 
+  - [frontend/src/pages/Inventory/AddItemModal.jsx](mdc:frontend/src/pages/Inventory/AddItemModal.jsx)
+  - [frontend/src/pages/Inventory/EditItemModal.jsx](mdc:frontend/src/pages/Inventory/EditItemModal.jsx)
+
+## Inventory Tracking
+
+### Key Fields
+- `shopQuantity`: Available quantity in the shop
+- `shopNetWeight`: Available net weight in the shop
+- `shopGrossWeight`: Available gross weight in the shop
+- `warehouseQuantity`: Quantity in the warehouse
+- `warehouseNetWeight`: Net weight in the warehouse
+- `warehouseGrossWeight`: Gross weight in the warehouse
+
+### Validation Process
+1. When adding items to an invoice, the system checks:
+   - If requested quantity <= available shop quantity
+   - If requested net weight <= available shop net weight
+   - If requested gross weight <= available shop gross weight
+2. Real-time validation messages appear if any constraints are violated
+3. On invoice creation/editing, inventory is automatically adjusted
+
+## Integration with Invoice System
+
+### Customer Invoices
+- When creating a customer invoice in [frontend/src/pages/Customers/GenerateCustomerInvoice.jsx](mdc:frontend/src/pages/Customers/GenerateCustomerInvoice.jsx):
+  1. Available inventory is fetched and displayed
+  2. When items are added, inventory validation occurs
+  3. On invoice save, inventory is reduced
+
+### Vendor Purchases
+- When recording vendor purchases, inventory is increased
+- Purchases can update both shop and warehouse inventory
+
+## Important Considerations
+- Inventory checks must happen in real-time during form input
+- Backend validation ensures data integrity
+- When editing invoices, inventory adjustments account for original quantities
+- Transfers between shop and warehouse are tracked separately

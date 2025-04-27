@@ -1,0 +1,44 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project Structure
+
+This full-stack inventory and invoicing application is organized with separate frontend and backend directories:
+
+## Frontend Structure
+- Entry point: [frontend/src/main.jsx](mdc:frontend/src/main.jsx)
+- Main application component: [frontend/src/App.jsx](mdc:frontend/src/App.jsx)
+- Key directories:
+  - `frontend/src/components/` - Reusable UI components
+  - `frontend/src/pages/` - Page-level components
+  - `frontend/src/contexts/` - React context providers
+  - `frontend/src/hooks/` - Custom React hooks
+  - `frontend/src/services/` - API services for backend communication
+  - `frontend/src/utils/` - Utility functions
+  - `frontend/src/styles/` - CSS and styling files
+  - `frontend/src/layouts/` - Layout components
+
+## Backend Structure
+- Entry point: [backend/server.js](mdc:backend/server.js)
+- Key directories:
+  - `backend/routes/` - API route definitions
+  - `backend/controllers/` - Request handlers
+  - `backend/models/` - MongoDB schema models
+  - `backend/services/` - Business logic services
+  - `backend/middleware/` - Express middleware
+  - `backend/utils/` - Utility functions
+
+## Configuration Files
+- Frontend:
+  - [frontend/package.json](mdc:frontend/package.json) - Dependencies and scripts
+  - [frontend/vite.config.js](mdc:frontend/vite.config.js) - Vite configuration
+  - [frontend/tailwind.config.js](mdc:frontend/tailwind.config.js) - Tailwind CSS styling
+  - [frontend/jsconfig.json](mdc:frontend/jsconfig.json) - JavaScript configuration
+
+- Backend:
+  - [backend/package.json](mdc:backend/package.json) - Dependencies and scripts
+
+## Database Seeding
+The database can be seeded with initial data using [backend/seed.js](mdc:backend/seed.js).

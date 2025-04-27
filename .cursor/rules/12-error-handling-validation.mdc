@@ -1,0 +1,104 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Error Handling and Validation
+
+This rule describes the error handling and validation practices throughout the application.
+
+## Frontend Validation
+
+### Form Validation
+- **Real-time Validation**: Uses state variables to track validity of inputs
+- **Visual Feedback**: Error messages displayed inline with form fields
+- **Submit Protection**: Forms cannot be submitted with invalid data
+
+### Example Validation Pattern
+```javascript
+// Validation state
+const [validation, setValidation] = useState({
+  isValid: true,
+  message: ''
+});
+
+// Validation function
+const validateInput = (value) => {
+  if (!value) {
+    setValidation({
+      isValid: false,
+      message: 'This field is required'
+    });
+    return;
+  }
+  
+  // More validation rules...
+  
+  setValidation({ isValid: true, message: '' });
+};
+
+// Form element with validation
+<div>
+  <input 
+    value={inputValue}
+    onChange={handleChange}
+    className={!validation.isValid ? 'border-red-500' : ''}
+  />
+  {!validation.isValid && (
+    <p className="text-red-500 text-sm">{validation.message}</p>
+  )}
+</div>
+```
+
+## Backend Validation
+
+### Mongoose Schema Validation
+- Required fields are enforced by the schema
+- Data types are validated at the model level
+- Custom validation logic is implemented in schema methods
+
+### API Response Structure
+- Success responses include status and data
+- Error responses include descriptive messages
+- HTTP status codes are used correctly
+- Validation errors are clearly identified
+
+```javascript
+// Success response
+res.status(200).json({
+  success: true,
+  data: result
+});
+
+// Error response
+res.status(400).json({
+  success: false,
+  message: 'Validation error',
+  errors: validationErrors
+});
+```
+
+## Common Validation Scenarios
+
+### Numeric Values
+- All monetary calculations should use `parseFloat()` to prevent NaN
+- Ensure values are greater than zero where appropriate
+- Round currency values appropriately
+
+### Date Validation
+- Due dates must be after invoice dates
+- Payment dates must be valid
+
+### Inventory Validation
+- Verify sufficient quantity/weight before creating invoices
+- Prevent negative inventory values
+
+## Important Error Cases
+- **Broker Commission Issues**: Ensure calculations don't result in NaN
+- **Inventory Constraints**: Alert when trying to sell more than available
+- **Payment Validation**: Ensure payment amounts are valid and don't exceed invoice total
+- **Form Submissions**: Validate all required fields before API calls
+
+## Reference Files
+- [frontend/src/pages/Customers/GenerateCustomerInvoice.jsx](mdc:frontend/src/pages/Customers/GenerateCustomerInvoice.jsx) - Client-side validation example
+- [backend/controllers/customerInvoiceController.js](mdc:backend/controllers/customerInvoiceController.js) - Server-side validation example

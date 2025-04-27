@@ -1,0 +1,28 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Code Conventions
+
+## Frontend
+- React components use functional components with hooks
+- File naming:
+  - Component files use PascalCase (e.g., `Button.jsx`, `UserProfile.jsx`)
+  - Utility and hook files use camelCase (e.g., `formatDate.js`, `useAuth.js`)
+- Styles use Tailwind CSS utility classes directly in components
+- React Router is used for client-side routing
+
+## Backend
+- Controllers follow RESTful principles
+- Models use Mongoose schemas
+- Route handlers are organized by resource
+- Authentication uses JWT tokens
+- Error handling is consistent with middleware
+
+## General
+- Use ES6+ JavaScript syntax
+- Async/await for asynchronous operations
+- Descriptive variable and function names
+- Consistent indentation (2 spaces)
+- Proper error handling with try/catch blocks

@@ -1,0 +1,72 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Customer Invoice Workflow
+
+This rule outlines the Customer Invoice feature in the application, which enables creating and managing customer invoices.
+
+## Core Components
+
+### Backend
+- **Model**: [backend/models/CustomerInvoice.js](mdc:backend/models/CustomerInvoice.js) - Defines the customer invoice schema
+- **Controller**: [backend/controllers/customerInvoiceController.js](mdc:backend/controllers/customerInvoiceController.js) - Handles invoice CRUD operations
+- **Routes**: [backend/routes/customerInvoiceRoutes.js](mdc:backend/routes/customerInvoiceRoutes.js) - Defines API endpoints
+
+### Frontend
+- **Service**: [frontend/src/services/customerInvoiceService.js](mdc:frontend/src/services/customerInvoiceService.js) - API integration
+- **Pages**:
+  - [frontend/src/pages/Customers/GenerateCustomerInvoice.jsx](mdc:frontend/src/pages/Customers/GenerateCustomerInvoice.jsx) - Form for creating new invoices
+  - [frontend/src/pages/Customers/CustomerInvoicePreviewModal.jsx](mdc:frontend/src/pages/Customers/CustomerInvoicePreviewModal.jsx) - Invoice preview and confirmation
+  - [frontend/src/pages/Customers/CustomerInvoicesList.jsx](mdc:frontend/src/pages/Customers/CustomerInvoicesList.jsx) - List of all invoices
+  - [frontend/src/pages/Customers/CustomerInvoiceDetails.jsx](mdc:frontend/src/pages/Customers/CustomerInvoiceDetails.jsx) - Detailed view of an invoice
+  - [frontend/src/pages/Customers/EditCustomerInvoiceModal.jsx](mdc:frontend/src/pages/Customers/EditCustomerInvoiceModal.jsx) - Edit existing invoices
+
+## Workflow
+1. User navigates to the Generate Customer Invoice page
+2. User selects a customer, optionally a broker, and invoice details
+3. User adds items to the invoice with quantity, weight, and pricing
+4. Real-time calculations update subtotal, total, and remaining amounts
+5. User can preview the invoice before saving
+6. On confirmation, the invoice is saved to the database
+7. Invoice status is automatically determined based on payment status
+
+## Key Features
+- Automatic invoice number generation
+- Real-time calculations for pricing
+- Integration with customer, broker, and item data
+- Payment tracking with multiple payment methods
+- Status management (unpaid, partial, paid, overdue)
+- Broker commission calculation
+
+## Broker Integration
+When a broker is involved in a sale, the system:
+1. Allows selecting an existing broker or entering a new one
+2. Enables setting a commission percentage (0-100%)
+3. Automatically calculates the commission amount
+4. Tracks broker commission payments separately
+5. Validates that commission calculations don't result in NaN values
+
+### Broker Commission Calculation
+```javascript
+// Pseudocode for broker commission calculation
+subtotal = sum(items.map(item => parseFloat(item.totalPrice || 0)));
+total = subtotal + parseFloat(labourTransportCost || 0);
+
+if (brokerName && brokerCommissionPercentage > 0) {
+  brokerCommissionAmount = Math.round((total * brokerCommissionPercentage) / 100);
+} else {
+  brokerCommissionAmount = 0;
+}
+
+// Ensure remaining amount calculation is correct
+totalPaidAmount = sum(payments.map(payment => parseFloat(payment.amount || 0)));
+remainingAmount = total - totalPaidAmount;
+```
+
+## Common Issues and Solutions
+- **NaN Values**: Ensure all calculations use parseFloat() for numeric conversions
+- **Commission Validation**: Verify broker commission can't be reduced below already paid amount
+- **Payment Tracking**: Ensure payment amounts are properly tracked for both customers and brokers
+- **Data Integrity**: Validate all required fields before saving to database

@@ -1,0 +1,50 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project Overview
+
+This is a full-stack inventory and invoicing application with separate frontend and backend:
+
+- Frontend: React application built with Vite, using Tailwind CSS for styling
+- Backend: Express.js server with MongoDB database
+
+## Business Purpose
+This application helps businesses manage:
+- Inventory tracking (shop and warehouse)
+- Customer invoicing and payment tracking
+- Broker management and commission calculations
+- Vendor purchases and stock management
+
+## Main Entry Points
+- Frontend: [frontend/src/main.jsx](mdc:frontend/src/main.jsx) bootstraps the React application
+- Backend: [backend/server.js](mdc:backend/server.js) initializes the Express server
+
+## Key Configuration Files
+- Frontend: 
+  - [frontend/package.json](mdc:frontend/package.json) - Dependencies and scripts
+  - [frontend/vite.config.js](mdc:frontend/vite.config.js) - Vite configuration
+  - [frontend/tailwind.config.js](mdc:frontend/tailwind.config.js) - Tailwind CSS configuration
+
+- Backend:
+  - [backend/package.json](mdc:backend/package.json) - Dependencies and scripts
+
+## Core Features
+1. **Inventory Management**: Track items with quantities and weights
+2. **Customer Invoicing**: Generate and manage customer invoices
+3. **Broker Management**: Track brokers and their commissions
+4. **Payment Tracking**: Monitor payment status and history
+5. **Vendor Purchases**: Record purchases and update inventory
+
+## Key Workflows
+- Creating customer invoices with broker commission calculations
+- Tracking payments and updating invoice status
+- Managing inventory levels between shop and warehouse
+- Generating reports for sales, inventory, and commissions
+
+## Important Considerations
+- All monetary calculations should use proper numeric values
+- Inventory validation should happen in real-time
+- Payment tracking should update invoice status automatically
+- Broker commissions should be calculated accurately

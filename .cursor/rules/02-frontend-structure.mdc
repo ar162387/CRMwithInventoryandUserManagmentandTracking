@@ -1,0 +1,29 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Frontend Structure
+
+The frontend is a React application structured as follows:
+
+## Core Files
+- [frontend/src/main.jsx](mdc:frontend/src/main.jsx) - Application entry point
+- [frontend/src/App.jsx](mdc:frontend/src/App.jsx) - Main App component
+- [frontend/src/index.css](mdc:frontend/src/index.css) - Global styles including Tailwind imports
+
+## Directory Structure
+- `src/components/` - Reusable UI components
+- `src/pages/` - Page components that represent routes
+- `src/routes/` - Routing configuration
+- `src/contexts/` - React context providers
+- `src/hooks/` - Custom React hooks
+- `src/services/` - API service integrations
+- `src/utils/` - Utility functions
+- `src/layouts/` - Layout components
+- `src/styles/` - Additional style files
+- `src/config/` - Configuration files
+
+## Development
+- Run the development server with `npm run dev` or `yarn dev`
+- Build the production version with `npm run build` or `yarn build`

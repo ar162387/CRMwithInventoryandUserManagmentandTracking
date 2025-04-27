@@ -1,0 +1,57 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Frontend Patterns and State Management
+
+This rule outlines the common patterns used in the frontend React application.
+
+## Component Structure
+
+### Form Patterns
+- Form components use controlled inputs with React state
+- Complex forms are divided into sections for better organization
+- Validation is performed before form submission
+
+### Data Display Patterns
+- Table components for listing data with sorting and filtering
+- Detail views for showing complete information about entities
+- Modal components for previews and confirmations
+
+## State Management
+
+### Local State
+- `useState` hook for component-level state
+- Form data typically stored in component state
+- Loading and error states managed at component level
+
+### API Integration
+- Service modules encapsulate API calls
+- Async/await pattern for handling promises
+- Error handling with try/catch blocks
+
+## UI Patterns
+
+### Layout Components
+- Page layouts provide consistent structure
+- Navigation components for moving between sections
+- Form layouts for standardized input styling
+
+### Common UI Elements
+- Button components with different styles based on action type
+- Input components with validation states
+- Dropdown and autocomplete components for selection
+
+## Examples
+- [frontend/src/pages/Customers/GenerateCustomerInvoice.jsx](mdc:frontend/src/pages/Customers/GenerateCustomerInvoice.jsx) demonstrates:
+  - Complex form handling
+  - Autocomplete inputs
+  - Real-time calculations
+  - Modal integration for preview
+
+- Customer Invoice workflow shows patterns for:
+  - Form data collection
+  - API integration
+  - Data transformation
+  - Preview before submission

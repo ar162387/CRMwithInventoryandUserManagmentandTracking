@@ -1,0 +1,65 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Security Best Practices
+
+This document outlines security measures and practices implemented throughout the application.
+
+## Authentication & Authorization
+
+- JWT-based authentication with proper token expiration
+- Role-based access control for different user types
+- Secure password storage using bcrypt hashing
+- CSRF protection with tokens on state-changing operations
+
+## Data Protection
+
+- Input validation on all client and server endpoints
+- Parameterized queries to prevent SQL injection
+- Data sanitization to prevent XSS attacks
+- Sensitive data encryption in transit and at rest
+
+## API Security
+
+- Rate limiting to prevent brute force attacks
+- Request size limiting to prevent DoS attacks
+- Proper HTTP security headers configured
+- API access logging for security audit trails
+
+## Frontend Security
+
+- Avoiding direct DOM manipulation that could lead to XSS
+- Using React's built-in XSS protection
+- Implementing Content Security Policy
+- Validating all user inputs before submission
+
+## Environment Security
+
+- Separation of development and production environments
+- Environment variables for storing sensitive configuration
+- No secrets committed to version control
+- Least privilege principle for service accounts
+
+## Security Testing
+
+- Regular dependency scanning for vulnerabilities
+- Static code analysis for security issues
+- Penetration testing for critical workflows
+- Security code reviews for sensitive components
+
+## Incident Response
+
+- Error logging without exposing sensitive information
+- Graceful error handling without stack traces in production
+- Monitoring for unusual activity patterns
+- Defined process for security patch deployments
+
+## Secure Coding Guidelines
+
+1. Always validate input at both client and server
+2. Never trust client-side validation alone
+3. Implement proper authentication for all protected resources
+4. Log security-relevant events for audit purposes
+5. Keep dependencies updated to address known vulnerabilities

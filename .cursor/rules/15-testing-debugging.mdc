@@ -1,0 +1,79 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Testing and Debugging Strategies
+
+This guide outlines the testing approach and debugging workflows for this application.
+
+## Testing Architecture
+
+### Frontend Testing
+- Unit tests for components using React Testing Library
+- Integration tests for page workflows
+- End-to-end tests using Cypress for critical user journeys
+
+### Backend Testing
+- Unit tests for service functions
+- Integration tests for API endpoints
+- Database interaction tests with MongoDB memory server
+
+## Test Files Organization
+
+- Frontend tests are co-located with components using `.test.jsx` suffix
+- Backend tests are stored in a parallel `__tests__` directory structure
+
+## Running Tests
+
+### Frontend Tests
+```bash
+# From frontend directory
+npm run test       # Run all tests
+npm run test:watch # Run tests in watch mode
+```
+
+### Backend Tests
+```bash
+# From backend directory
+npm run test       # Run all tests
+npm run test:watch # Run tests in watch mode
+```
+
+## Debugging Techniques
+
+### Frontend Debugging
+- React DevTools for component inspection
+- Redux DevTools for state management debugging (if applicable)
+- Browser console.log statements with clear prefixes
+- Network panel for API request inspection
+
+### Backend Debugging
+- Detailed logging with Winston logger
+- Request/response logging middleware
+- Debug environment variable for verbose output
+- Database query performance monitoring
+
+## Common Issues and Solutions
+
+1. **State Management Issues**
+   - Check React Context providers in parent components
+   - Verify state update functions are called correctly
+   - Inspect component re-rendering with React DevTools
+
+2. **API Integration Problems**
+   - Verify API URLs and request formats
+   - Check authentication token validity
+   - Inspect network requests in browser developer tools
+   - Review backend logs for error details
+
+3. **Database Query Performance**
+   - Ensure proper indexes are created on frequently queried fields
+   - Review query execution plans
+   - Consider pagination for large result sets
+
+## Performance Profiling
+
+- Frontend performance measured with Lighthouse and React Profiler
+- Backend response times logged for critical endpoints
+- Database query execution times monitored for optimization opportunities

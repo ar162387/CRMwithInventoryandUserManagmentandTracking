@@ -1,0 +1,62 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Payment Tracking System
+
+This rule describes how payments are tracked across customer invoices and broker commissions.
+
+## Core Components
+
+### Data Model
+- **CustomerInvoice Model**: [backend/models/CustomerInvoice.js](mdc:backend/models/CustomerInvoice.js)
+  - Contains `payments` array with payment history
+  - Tracks `totalPaidAmount` and `remainingAmount`
+  - Includes `status` field that reflects payment status
+
+### Payment Structure
+```javascript
+payments: [{
+  amount: Number,
+  paymentMethod: String, // 'cash', 'online', 'cheque'
+  paymentDate: Date,
+  notes: String
+}]
+```
+
+## Invoice Status Logic
+Status is automatically determined based on payment data:
+1. **Paid**: `remainingAmount <= 0`
+2. **Overdue**: `remainingAmount > 0` AND current date > `dueDate`
+3. **Partial**: `totalPaidAmount > 0` AND `remainingAmount > 0` (and not overdue)
+4. **Unpaid**: `totalPaidAmount = 0` AND `remainingAmount > 0` (and not overdue)
+
+## Payment Workflows
+
+### Adding Payments
+- Initial payment can be recorded during invoice creation
+- Additional payments are added through payment modals
+- Each payment updates the invoice's payment history and recalculates status
+
+### Broker Commission Tracking
+- **Commission Payment**: Tracks payments made to brokers
+- **Commission Calculation**: Based on total invoice amount and commission percentage
+- **Remaining Commission**: Tracks unpaid broker commissions
+
+## Important UI Components
+- [frontend/src/pages/Customers/CustomerInvoicePaymentModal.jsx](mdc:frontend/src/pages/Customers/CustomerInvoicePaymentModal.jsx) - Interface for recording payments
+- [frontend/src/pages/Customers/CustomerInvoiceDetails.jsx](mdc:frontend/src/pages/Customers/CustomerInvoiceDetails.jsx) - Displays payment history and status
+
+## Validation Rules
+1. Payment amount must be a positive number
+2. Payment date must be valid
+3. Payment method must be one of the acceptable types
+4. Total paid amount cannot exceed the invoice total
+5. When recording broker commission payments, amount cannot exceed calculated commission
+
+## Important Considerations
+- All payment calculations should use proper numeric values (avoid NaN)
+- Payment history should be displayed in chronological order
+- Status changes trigger visual indicators in the UI
+- Payment records are immutable once saved

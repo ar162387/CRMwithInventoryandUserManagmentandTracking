@@ -1,0 +1,95 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Dashboard Data Flow
+
+## Model to Dashboard Flow
+
+The Dashboard API represents a read-only data flow from various models to the frontend dashboard. This document explains the specific data flows and transformations.
+
+### Customer Invoice Data Flow
+
+```
+CustomerInvoice Model → dashboardController → Dashboard Frontend
+```
+
+- **Data Source**: [backend/models/CustomerInvoice.js](mdc:backend/models/CustomerInvoice.js)
+- **Controller Logic**: Aggregates invoice totals, filters by date and status in [dashboardController.js](mdc:backend/controllers/dashboardController.js)
+- **Frontend Display**: Cards and reminder tables in [DashboardPage.jsx](mdc:frontend/src/pages/DashboardPage.jsx)
+- **Key Fields Used**: `remainingAmount`, `totalPaidAmount`, `status`, `dueDate`
+
+### Vendor Invoice Data Flow
+
+```
+VendorInvoice Model → dashboardController → Dashboard Frontend
+```
+
+- **Data Source**: [backend/models/VendorInvoice.js](mdc:backend/models/VendorInvoice.js)
+- **Controller Logic**: Aggregates invoice totals, filters by date and status
+- **Frontend Display**: Cards and reminder tables
+- **Key Fields Used**: `remainingAmount`, `totalPaidAmount`, `status`, `dueDate`
+
+### Broker Data Flow
+
+```
+Broker Model → dashboardController → Dashboard Frontend
+```
+
+- **Data Source**: [backend/models/Broker.js](mdc:backend/models/Broker.js) 
+- **Controller Logic**: Aggregates totals, filters by status and due date
+- **Frontend Display**: Cards and reminder tables
+- **Key Fields Used**: `totalRemaining`, `totalPaid`, `status`, `dueDate`
+
+### Commissioner Data Flow
+
+```
+Commissioner Model → dashboardController → Dashboard Frontend
+```
+
+- **Data Source**: [backend/models/Commissioner.js](mdc:backend/models/Commissioner.js)
+- **Controller Logic**: Aggregates totals, filters by status and due date
+- **Frontend Display**: Cards and reminder tables
+- **Key Fields Used**: `totalRemaining`, `totalPaid`, `status`, `dueDate`
+
+### Circulating Supply Data Flow
+
+```
+Multiple Models → dashboardController.getCirculatingSupply → Dashboard Frontend
+```
+
+- **Data Sources**: Balance, CustomerInvoice, VendorInvoice, Broker, Commissioner models
+- **Controller Logic**: Calculates total balance, subtracts payments
+- **Frontend Display**: Circulating supply card in DashboardPage
+- **Key Fields Used**: Various payment and balance totals from all models
+
+## Data Refresh Pattern
+
+The dashboard data is refreshed using the following pattern:
+
+1. Dashboard page loads and initiates multiple parallel API requests
+2. Each API endpoint queries relevant models independently
+3. Results are aggregated in the frontend component
+4. No real-time updates; refresh requires page reload
+
+## Data Aggregation Methods
+
+The Dashboard API uses several aggregation techniques:
+
+1. **MongoDB Aggregation Pipeline**: For complex calculations (e.g., `totalPaid`)
+   ```javascript
+   await Model.aggregate([
+     { $group: { _id: null, totalPaid: { $sum: '$totalPaidAmount' } } }
+   ])
+   ```
+
+2. **JavaScript Reduction**: For simpler calculations
+   ```javascript
+   items.reduce((sum, item) => sum + (item.amount || 0), 0)
+   ```
+
+3. **Date Filtering**: Using `getUpcomingWeekRange()` helper for reminders
+   ```javascript
+   dueDate: { $gte: today, $lte: nextWeek }
+   ```
