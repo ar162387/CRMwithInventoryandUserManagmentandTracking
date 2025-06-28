@@ -5,11 +5,11 @@ CRMwithInventoryandUserManagementandTracking is a comprehensive business managem
 
 This project aims to automate and streamline complex business workflows. The core features include:
 
-🧩 🔧 Modular Architecture: Built with React, Tailwind CSS, and Vite for scalable, maintainable UI development.
-💾 ⚡ Real-Time Data & Calculations: Ensures accurate financial and resource tracking with instant updates.
-🔐 🔑 Secure Role-Based Access: Implements authentication, authorization, and activity logging for auditability.
-🚀 🛠 API-Driven Operations: Extensive services for CRUD, search, and data synchronization across business modules.
-⚙️ 🕒 Automated Background Jobs: Keeps invoice statuses and other critical data current with scheduled tasks.
+- 🧩 🔧 Modular Architecture: Built with React, Tailwind CSS, and Vite for scalable, maintainable UI development.
+- 💾 ⚡ Real-Time Data & Calculations: Ensures accurate financial and resource tracking with instant updates.
+- 🔐 🔑 Secure Role-Based Access: Implements authentication, authorization, and activity logging for auditability.
+- 🚀 🛠 API-Driven Operations: Extensive services for CRUD, search, and data synchronization across business modules.
+- ⚙️ 🕒 Automated Background Jobs: Keeps invoice statuses and other critical data current with scheduled tasks.
 
 ## 🌟 Key Features
 
